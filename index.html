@@ -657,7 +657,7 @@
 
       function getExchangeRates() {
         ajax(
-          "https://api.exchangerate.host/latest?base=USD&symbols=" + currencyList,
+          "https://api.frankfurter.app/latest?from=USD&to=" + currencyList,
           function (res) {
             RATES = res.rates;
           }
