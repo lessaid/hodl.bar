@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
    <meta charset="UTF-8"/>
@@ -572,8 +573,13 @@
       function getData() {
         ajax("https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT", function (res) {
           if (!res || !res.askPrice) return;
-
-          var rate = RATES[currencyPicker.value] || 1;
+		if (RATES && RATES[currencyPicker.value]) {
+		  var rate = RATES[currencyPicker.value];
+		  // Rest of your code that uses 'rate'
+		} else {
+		  var rate = 1;
+		}
+          // var rate = RATES[currencyPicker.value] || 1;
           var rawPrice = +res.askPrice;
           var price = rawPrice * rate;
           var askPrice = price.toFixed(2);
