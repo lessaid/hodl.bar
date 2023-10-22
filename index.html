@@ -463,7 +463,7 @@
         </tr>
         <tr>
           <td>
-            <h6>BTC ⇄ <span class="other-currency-unit">CAD</span></h6>
+            <h6>BTC ⇄ <span class="other-currency-unit">EUR</span></h6>
             <span class="btc-other">00<i>,</i>000.00</span>
           </td>
           <td>
@@ -611,12 +611,26 @@
             (+res.priceChangePercent > 0 ? "+" : "") +
             (+res.priceChangePercent).toFixed(2);
 
-          if (RATES.CAD) {
+      /*    if (RATES.CAD) {
             var otherPrice =
               currencyPicker.value === "USD" ? RATES.CAD * rawPrice : rawPrice;
             btcOtherPrice.innerHTML = addComma(otherPrice.toFixed(2));
-          }
-
+          } */
+		  
+		  if (RATES && RATES.CAD) {
+		  var otherPrice = currencyPicker.value === "USD" ? RATES.CAD * rawPrice : rawPrice;
+		  btcOtherPrice.innerHTML = addComma(otherPrice.toFixed(2));
+			}
+        /*  if (RATES.EUR) {
+            var otherPrice =
+              currencyPicker.value === "USD" ? RATES.EUR * rawPrice : rawPrice;
+            btcOtherPrice.innerHTML = addComma(otherPrice.toFixed(2));
+          } */
+		  
+		  		  if (RATES && RATES.EUR) {
+		  var otherPrice = currencyPicker.value === "USD" ? RATES.EUR * rawPrice : rawPrice;
+		  btcOtherPrice.innerHTML = addComma(otherPrice.toFixed(2));
+			}
           if (FEES) {
             transaction.innerHTML = (
               ((FEES.fastestFee * 140) / satsPerBTC) *
@@ -716,7 +730,7 @@
       function applyCurrencyChange() {
         document.querySelector(".currency-unit").innerHTML = currencyPicker.value;
         document.querySelector(".other-currency-unit").innerHTML =
-          currencyPicker.value === "USD" ? "CAD" : "USD";
+          currencyPicker.value === "USD" ? "EUR" : "USD";
         transaction.dataset.unit = currencyPicker.value;
         getData();
       }
