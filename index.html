@@ -1,11 +1,20 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
-   <meta charset="UTF-8"/>
+ <head>  
+  <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Hodl.bar Bitcoin Ticker</title>
+    <title class="btc-price-title">00,000 $ HODL.Bar: Real-Time Bitcoin Ticker Prices on Your Device </title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@1,900&amp;display=swap" rel="stylesheet"/>
-    <!-- 1680 × 1264 -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"> 
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+	<!-- 1680 × 1264 -->
     <style>
       html {
         margin: 0;
@@ -521,6 +530,7 @@
         MINED_COINS,
         BLOCK_HEIGHT,
         btcPriceEl = document.querySelector(".btc-price"),
+        btcPriceElonTitle = document.querySelector(".btc-price-title"),
         btcDecimalEl = document.querySelector(".btc-decimal"),
         btcHigh = document.querySelector(".btc-high"),
         btcLow = document.querySelector(".btc-low"),
@@ -589,7 +599,7 @@
           var prices = askPrice.toString().split(".");
           btcDecimalEl.innerHTML = "." + prices[1];
           btcPriceEl.innerHTML = addComma(prices[0]);
-
+          btcPriceElonTitle.innerHTML = addPhrase(addCommaOnTitle(prices[0]),currencyPicker.value);
           satsPerDollar.innerHTML = addComma(satPer$.toFixed(2));
 
           if (volumeValue !== res.volume) {
@@ -667,6 +677,15 @@
       function addComma(value) {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<i>,</i>");
       }
+      function addCommaOnTitle(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+      function addPhrase(price, picker) {
+          return price + " " +  picker + " HODL.Bar: Real-Time Bitcoin Ticker Prices on Your Device ";
+      }
+      function applyaddPhrase(price, picker) {
+         return btcPriceElonTitle.innerHTML = addPhrase(addCommaOnTitle(prices[0]),currencyPicker.value);
+      }
 
       function getBlockChain() {
         ajax("https://mempool.space/api/blocks/tip/height", function (res) {
@@ -738,6 +757,7 @@
       function onSelectChange() {
         applyCurrencyChange();
         applyUrlHash();
+        applyaddPhrase();
       }
 
       // Hack, Kindle browser crashes after 2-5 min
