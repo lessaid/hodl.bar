@@ -1,2 +1,2 @@
-# website
-Public site 
+# hodl.bar
+Official repo for https://hodl.bar webiste. 
