@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);)(window,document,'script','dataLayer','GTM-TV54DRQW');</script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title class="btc-price-title">00,000 $ HODL.Bar: Real-Time Bitcoin Ticker Prices on Your Device</title>
@@ -28,6 +30,68 @@
             background-color: var(--background-color);
             color: var(--text-color);
         }
+        .toggle-fullscreen-btn {
+	position: fixed;
+	z-index: 10000;
+	top: 10px;
+	right: 10px;
+	border: 0;
+	padding: 0;
+	background: none;
+	cursor: pointer;
+	outline: none;
+}
+
+
+.toggle-fullscreen-svg {
+	display: block;
+	height: auto;
+}
+
+.toggle-fullscreen-svg path {
+	transform-box: view-box;
+	transform-origin: 12px 12px;
+	fill: none;
+	stroke: hsl(230, 3%, 58%);
+    //stroke: hsl(225, 10%, 8%);
+	stroke-width: 4;
+	transition: .15s;
+}
+
+
+.toggle-fullscreen-btn:hover path:nth-child(1),
+.toggle-fullscreen-btn:focus path:nth-child(1) {
+	transform: translate(-2px, -2px);
+}
+
+.toggle-fullscreen-btn:hover path:nth-child(2),
+.toggle-fullscreen-btn:focus path:nth-child(2) {
+	transform: translate(2px, -2px);
+}
+
+.toggle-fullscreen-btn:hover path:nth-child(3),
+.toggle-fullscreen-btn:focus path:nth-child(3) {
+	transform: translate(2px, 2px);
+}
+
+.toggle-fullscreen-btn:hover path:nth-child(4),
+.toggle-fullscreen-btn:focus path:nth-child(4) {
+	transform: translate(-2px, 2px);
+}
+
+
+.toggle-fullscreen-btn:not(.on) .icon-fullscreen-leave {
+	display: none;
+}
+
+.toggle-fullscreen-btn.on .icon-fullscreen-enter {
+	display: none;
+}
+        .dark-mode-toggle .checkbox {
+  opacity: 0;
+  position: absolute;
+}
+        
         :root {
             --background-color: #ffffff;
             --text-color: #000000;
@@ -287,9 +351,9 @@
         .rotate.dialog .dialog-content {
             width: 96rem;
             height: 94rem;
-            -
+        }
 
-webkit-transform: scale(0.96);
+        webkit-transform: {scale(0.96);
         }
         .dialog-content h3 button {
             float: right;
@@ -425,6 +489,26 @@ webkit-transform: scale(0.96);
     </style>
 </head>
 <body>
+
+    <button class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode" hidden>
+	<svg class="toggle-fullscreen-svg" width="28" height="28" viewBox="-2 -2 28 28">
+		<g class="icon-fullscreen-enter">
+			<path d="M 2 9 v -7 h 7" />
+			<path d="M 22 9 v -7 h -7" />
+			<path d="M 22 15 v 7 h -7" />
+			<path d="M 2 15 v 7 h 7" />
+		</g>
+		
+		<g class="icon-fullscreen-leave">
+			<path d="M 24 17 h -7 v 7" />
+			<path d="M 0 17 h 7 v 7" />
+			<path d="M 0 7 h 7 v -7" />
+			<path d="M 24 7 h -7 v -7" />
+		</g>
+	</svg>
+</button>
+
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TV54DRQW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <section class="main">
         <header>
             <div class="btc-percent">+0.00</div>
@@ -503,9 +587,13 @@ webkit-transform: scale(0.96);
                 </td>
             </tr>
         </table>
+        
         <section class="dialog-bg" onclick="closeDialog()">
             <div class="dialog-content" onclick="event.stopPropagation()">
-		    <button id="dark-mode-toggle">Toggle Dark Mode</button>
+		        <div class="dark-mode-toggle" id="dark-mode-toggle">
+        <button id="dark-mode-toggle" class="dark-mode-toggle">Toggle Dark Mode</button>
+        <input type="checkbox"><span></span>
+    </div>
                 <h3>BTC Ticker<button onclick="closeDialog()">X</button></h3>
                 <h5>Setup</h5>
                 <ol>
@@ -716,6 +804,45 @@ webkit-transform: scale(0.96);
        
 
  }
+
+ if(document.fullscreenEnabled || document.webkitFullscreenEnabled) {
+	const toggleBtn = document.querySelector('.js-toggle-fullscreen-btn');
+
+	const styleEl = document.createElement('link');
+	styleEl.setAttribute('rel', 'stylesheet');
+	styleEl.setAttribute('href', 'https://codepen.io/tiggr/pen/poJoLyW.css');
+	styleEl.addEventListener('load', function() {
+		toggleBtn.hidden = false;
+	});
+	document.head.appendChild(styleEl);
+	
+	toggleBtn.addEventListener('click', function() {
+		if(document.fullscreen) {
+			document.exitFullscreen();
+		} else if(document.webkitFullscreenElement) {
+			document.webkitCancelFullScreen()
+		} else if(document.documentElement.requestFullscreen) {
+			document.documentElement.requestFullscreen();
+		} else {
+			document.documentElement.webkitRequestFullScreen();
+		}
+	});
+	
+	document.addEventListener('fullscreenchange', handleFullscreen);
+	document.addEventListener('webkitfullscreenchange', handleFullscreen);
+	
+	
+	function handleFullscreen() {
+		if(document.fullscreen || document.webkitFullscreenElement) {
+			toggleBtn.classList.add('on');
+			toggleBtn.setAttribute('aria-label', 'Exit fullscreen mode');
+		} else {
+			toggleBtn.classList.remove('on');
+			toggleBtn.setAttribute('aria-label', 'Enter fullscreen mode');
+		}
+	}
+}
+
         document.getElementById('dark-mode-toggle').addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
             const isDarkMode = document.body.classList.contains('dark-mode');
